@@ -1,0 +1,12 @@
+*{ margin: 0; padding:0; list-style: none;}
+
+#body { width: 800px; height: 600px; overflow: hidden; background:rgba(0,0,0,0.6); margin: 20px auto; position: relative; }
+#gameBtn { color: white;height: 24p; line-height: 24px; font-size: 20px; text-align: center; cursor: pointer; border: 1px #ffffff solid; width: 100px; height: 30px; position: absolute; top: 285px; left: 350px; }
+#score {  color: white; font-size:16px; position: absolute; top:2px; left: 2px;}
+#bee { position: relative;}
+.enemy1 { width: 40px; height: 28px; background:url(img/e1.png) no-repeat; background-size:contain; float: left;}
+.enemy2 { width: 40px; height: 28px; background:url(img/e2.png) no-repeat; background-size: contain;  float: left;}
+.enemy3 { width: 40px; height: 28px; background:url(img/e3.jpg) no-repeat; background-size:40px 28px; float: left; }
+
+.air1 { width: 46px; height: 60px; background:url(img/a.png) no-repeat; background-size: contain; position: absolute;}
+.bullet { width: 1px; height: 10px; overflow: hidden; background: white; position: absolute;}
