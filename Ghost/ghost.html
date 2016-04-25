@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> </title>
+<style>
+    #ghost { width: 600px; height: 600px;  background: rgb(145,192,201); }
+    #g_body { width: 140px; height: 180px;  border-radius:70px 70px 0 0/90px 90px 0 0;  background: rgb(254,254,254);  position: relative; /*transition:1s;*/}
+    .g_eye { width: 20px; height: 26px; border-radius: 10px/13px; border:1px solid black; position: absolute;
+      }
+    .g_eye_inner { width: 18px; height: 24px; border-radius: 9px/10px; background: rgba(0,0,0,0.8);} 
+    .g_eye:nth-of-type(1) { left: 42px; top: 60px;}
+    .g_eye:nth-of-type(2) { left: 92px; top: 60px;}
+    .mouth { width: 20px; height: 26px; border-radius: 10px/13px;   
+      position: absolute; left: 70px; top: 96px; border: 2px solid black/*rgb(20,28,83)*/;}
+     #tail { width: 140px; height: 16px; position: relative; top: 100%; overflow: hidden;}
+     .foot { width: 20px; height: 16px; background: white; float: left; border-radius: 0 0 10px 10px/0 0 8px 8px;  }
+     #g_shadow { width: 140px; height: 10px; border-radius: 70px/5px; background: rgba(0,0,0,0.4);  position: absolute; bottom: -60px;}
+    
+  
+</style>
+<script src="js/jquery-2.1.1.js"></script>
+  <script type="text/javascript">
+     $(document).ready(function(){
+           $(document.body).mousemove(function(event){
+                var e = event || window.event;
+                var x = e.pageX   ;
+                var y = e.pageY   ;
+
+
+                $("span").text(x + ", " + y);
+                var l = x -70>460?460:x-70;
+                var t = y -90>404?404 :y-90;
+
+                $("#g_body").css({left:l , top:t});
+           });
+     });
+  </script> 
+</head>
+
+<body>
+   
+   <div id="ghost">
+         <div id="g_body">
+            <div class="g_eye">
+               <div class="g_eye_inner"></div>
+            </div>
+            <div class="g_eye">
+              <div class="g_eye_inner"></div>
+            </div>
+            <div class="mouth"></div>
+            <div id="tail">
+               <div class="foot"></div>
+               <div class="foot"></div>
+               <div class="foot"></div>
+               <div class="foot"></div>
+               <div class="foot"></div>
+               <div class="foot"></div>
+               <div class="foot"></div>
+               <div class="foot"></div>
+            </div>
+
+              <div id="g_shadow"></div>
+         </div>
+        
+       
+   </div><span></span>
+</body>
+
+</html>
