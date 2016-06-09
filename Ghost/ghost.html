@@ -19,10 +19,10 @@
     
   
 </style>
-<script src="js/jquery-2.1.1.js"></script>
+<script src="jquery-2.1.1.js"></script>
   <script type="text/javascript">
      $(document).ready(function(){
-           $(document.body).mousemove(function(event){
+           $("#body").mousemove(function(event){
                 var e = event || window.event;
                 var x = e.pageX   ;
                 var y = e.pageY   ;
@@ -38,7 +38,7 @@
   </script> 
 </head>
 
-<body>
+<body id="body">
    
    <div id="ghost">
          <div id="g_body">

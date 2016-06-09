@@ -1,6 +1,6 @@
 *{ margin: 0; padding:0; list-style: none;}
 
-#body { width: 800px; height: 600px; overflow: hidden; background:rgba(0,0,0,0.6); margin: 20px auto; position: relative; }
+#body { width: 800px; height: 600px; overflow: hidden; background-image:url("./img/bg_1.jpg"); background-size: cover; margin: 20px auto; position: relative; }
 #gameBtn { color: white;height: 24p; line-height: 24px; font-size: 20px; text-align: center; cursor: pointer; border: 1px #ffffff solid; width: 100px; height: 30px; position: absolute; top: 285px; left: 350px; }
 #score {  color: white; font-size:16px; position: absolute; top:2px; left: 2px;}
 #bee { position: relative;}
