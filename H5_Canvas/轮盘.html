@@ -1,0 +1,137 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style type="text/css">
+
+      canvas { background: gray; }
+  </style>
+
+  <script type="text/javascript" >
+      window.onload = function  () {
+        //画布左上角为(0,0)
+
+        var canvas = document.getElementById("c");
+        var cobj = canvas.getContext("2d");
+        var colorArr = ["red","yellow","green","blue","red","yellow","green","pink"];
+        var textArr = ["1","2","3","4","5","6","7","8"]
+        var angle = 0;
+        var step = 10 + 10*Math.random();
+        var num = 0;
+        cobj.translate(400,400);
+
+        cobj.beginPath();
+
+        cobj.lineWidth = 1;
+        cobj.moveTo(260,0);
+        cobj.lineTo(300,20);
+        cobj.lineTo(300,-20);
+        cobj.lineTo(260,0);
+        cobj.fillStyle = "black";
+        cobj.fill();
+        cobj.stroke();
+        cobj.lineWidth = 2;
+
+
+
+        var t = setInterval(function(){
+        
+           if( step<0.01 )
+           {    
+               
+                clearInterval(t);
+
+                num = Math.ceil( ( (angle)%360)/45); 
+
+                if( num ==1 || num == 0)
+                {
+                  num = num;
+                }
+                else
+                {
+                  num = (10-num);
+                }
+                
+                cobj.moveTo(0,0);
+                cobj.beginPath();
+                cobj.textAlign="center";
+                cobj.textBaseline="middle";
+                cobj.font= "60px 微软雅黑";
+                cobj.fillText(num,0,0);              
+                 
+           }
+           else
+           {      step =step*0.9;
+                  angle += 10*step;
+                  cobj.clearRect(-300,-300,200,200);
+                  cobj.beginPath();
+                  
+
+                  cobj.save();
+                  cobj.rotate(angle*Math.PI/180);
+
+                  //轮盘
+                  for(var i=1;i<=8;i++)
+                  { 
+                     cobj.beginPath();
+
+                     cobj.moveTo(0,0);
+                     cobj.arc(0,0,200, (i-1)*45*Math.PI/180 , i*45*Math.PI/180);
+                     cobj.fillStyle = colorArr[i-1];
+                     cobj.stroke();
+                     cobj.fill();
+                    
+                  }
+
+                  //中间的小圆盘
+                  cobj.beginPath();
+                  cobj.fillStyle = "#fff";
+                  cobj.arc(0,0,100,0,2*Math.PI); 
+                  cobj.stroke();
+                  cobj.fill();
+
+                  //填文字
+                  for(var i = 0; i<8;i++)
+                  { 
+                    cobj.save();
+
+                    cobj.beginPath();
+                    cobj.rotate( (i*45-20)*Math.PI/180);  
+                    cobj.fillStyle = "black";
+                    cobj.font= "30px 微软雅黑";
+                    cobj.fillText(textArr[i],140,0);
+
+                    cobj.restore();
+                  }
+
+                  cobj.restore();
+           }
+            
+
+        },100)
+        
+    
+            
+       
+
+   
+
+
+      }
+  </script>
+
+  <title>canvas</title>
+</head>
+
+<body>
+   <canvas width=800 height=800 id="c">  //注意 不能在css中设置宽高 若在css中设置宽高 会等比例放大或缩小
+      此行内容在浏览器不识别canvas的情况下显示
+   </canvas>
+   
+</body>
+
+
+
+</html>
+
+

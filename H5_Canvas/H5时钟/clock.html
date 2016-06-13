@@ -1,0 +1,155 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style type="text/css">
+
+      canvas { background: gray;}
+  </style>
+
+  <script type="text/javascript" >
+      window.onload = function  () {
+        //画布左上角为(0,0)
+
+        var canvas = document.getElementById("c");
+        var cobj = canvas.getContext("2d");  //所有的操作属性全在这个2d环境下  
+        
+        var ox = 340;
+        var oy = 340;
+        var r = 300;
+
+
+    
+              //画指针函数
+          
+              function draw_shizhen(width,length,color,radio){
+                  cobj.shadowOffsetX = 0;
+                  cobj.shadowOffsetY = 0;
+                  cobj.shadowBlur = 0;
+
+                  cobj.lineWidth = width;
+                  cobj.strokeStyle = color;
+                  cobj.beginPath();
+                  cobj.moveTo(ox,oy);
+                  cobj.lineTo( ox+length*Math.cos(radio), oy+length*Math.sin(radio) );
+                  cobj.stroke();
+
+              };
+
+              function  draw_kedu(){
+
+                  var angle = 0;
+                  var mark_l ;
+                  cobj.lineWidth = 2;
+                  cobj.shadowColor = "black";
+                  cobj.shadowOffsetX = 0;
+                  cobj.shadowOffsetY = 0;
+                  cobj.shadowBlur = 0;
+
+                  for(var i=0 ; i<60 ;i++)
+                  { 
+                        if(i%5)
+                        {
+                          mark_l = r;
+                          lw = 2;
+                        }
+                        else
+                        {
+                          mark_l = r - 10;
+                          lw = 4;
+                        }
+                        cobj.lineWidth = lw;
+
+                        angle = 6*i*Math.PI/180;
+                        cobj.beginPath();
+                        cobj.moveTo( ox+r*Math.sin(angle) , oy+r*Math.cos(angle) );
+                        cobj.lineTo( ox+(mark_l-10)*Math.sin(angle) , oy+(mark_l-10)*Math.cos(angle) );
+                        cobj.stroke();
+                 }
+              };
+
+
+              function draw_biaopan(){
+
+              
+              // 阴影
+              cobj.shadowColor="black";
+              cobj.shadowOffsetX = 1;
+              cobj.shadowOffsetY = 1;
+              cobj.shadowBlur = 5; 
+              cobj.lineWidth = 4;
+
+              //渐变色
+              var colorObj = cobj.createRadialGradient(ox,oy,50,ox,oy,190);
+              colorObj.addColorStop(0,"#CCFFFF");
+              colorObj.addColorStop(0.5,"#0099CC");
+              colorObj.addColorStop(1,"#99CCFF");
+              cobj.fillStyle = colorObj;
+
+              cobj.beginPath();
+              cobj.arc(ox,ox,r,0,2*Math.PI);
+              cobj.stroke();
+              cobj.fill();
+
+
+
+                //画个中心小圆
+                cobj.beginPath();
+                cobj.arc(ox,oy,6,0,2*Math.PI);
+                cobj.fillStyle = "black";
+                cobj.fill();
+              };
+
+                 
+           
+                  
+     
+     setInterval(function(){
+              
+              cobj.clearRect(0,0,800,800);
+
+              var date = new Date();
+              var hudu_s = ( date.getSeconds()*6-90 )*Math.PI/180;
+              var hudu_minute = ( date.getMinutes()*6-90+date.getSeconds()/10 )*Math.PI/180;
+              var hudu_hour = ( date.getHours()*30-90+date.getMinutes()/2 )*Math.PI/180;  //canvas的0度是从3点钟开始  即x轴正方向
+              
+              
+
+    
+               //画表盘
+               draw_biaopan();
+               //画表盘刻度
+               draw_kedu();          
+
+              // 秒针
+              draw_shizhen(4,200,"black",hudu_s);
+              // 分针
+              draw_shizhen(6,140,"black",hudu_minute);
+              //时针
+              draw_shizhen(8,100,"black",hudu_hour);
+
+        
+     },1000)
+
+
+   
+
+
+      }
+  </script>
+
+  <title>canvas</title>
+</head>
+
+<body>
+   <canvas width=1400 height=800 id="c">  //注意 不能在css中设置宽高 若在css中设置宽高 会等比例放大或缩小
+      此行内容在浏览器不识别canvas的情况下显示
+   </canvas>
+   
+</body>
+
+
+
+</html>
+
+

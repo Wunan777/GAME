@@ -1,0 +1,114 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style type="text/css">
+
+      canvas { background: gray;}
+  </style>
+
+  <script type="text/javascript" >
+      window.onload = function  () {
+        //画布左上角为(0,0)
+
+        var canvas = document.getElementById("c");
+        var cobj = canvas.getContext("2d");  //所有的操作属性全在这个2d环境下  
+
+  
+            var num = 100;
+            var angle = 0;
+            var arr=[];
+
+
+               //每一秒产生一个rect对象
+               setInterval(function(){
+                var colors = "rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";  
+
+                var rect = {angle:0,num:150,scales:1,color:colors}
+
+                arr.push(rect);
+
+               },40)
+
+               //每隔40ms 调整arr数组中的对象rect的当前位置
+               setInterval(function(){
+                 for(var i = 0; i<arr.length; i++)
+                 {  
+                      
+                    if( arr[i].scales<=0.2 )   //每个对象的比例不应过小
+                    {
+                        arr[i].scales=0.2
+                    }
+
+
+                    if( arr[i].num<=0)       //每次调整前 判断是否到达临界值 到达则删除此对象
+                    {
+                      arr.splice(i,1);
+                    }
+                    else
+                    {
+                     arr[i].angle += 2;
+                     arr[i].num -= 0.5;
+                     arr[i].scales -= 0.002;
+                    }
+
+
+                 }
+               },40)
+
+   
+               //每隔40ms 绘制一次
+               setInterval(function(){
+
+                 
+                    cobj.clearRect(0,0,900,900);
+
+                     for(var i=0 ; i<arr.length; i++)
+                     {
+                         cobj.save(); 
+
+                         cobj.beginPath();
+
+                         cobj.translate(400,400);
+                         cobj.rotate(-arr[i].angle*Math.PI/180);
+                       
+                         cobj.scale(arr[i].scales,arr[i].scales);
+                         cobj.rect(arr[i].num,arr[i].num,20,20);
+                         cobj.fillStyle = arr[i].color;
+                         cobj.fill();
+
+
+                         cobj.restore();
+                     }
+
+          
+               },40)
+
+
+
+
+
+            
+       
+
+   
+
+
+      }
+  </script>
+
+  <title>canvas</title>
+</head>
+
+<body>
+   <canvas width=1500 height=800 id="c">  //注意 不能在css中设置宽高 若在css中设置宽高 会等比例放大或缩小
+      此行内容在浏览器不识别canvas的情况下显示
+   </canvas>
+   
+</body>
+
+
+
+</html>
+
+
