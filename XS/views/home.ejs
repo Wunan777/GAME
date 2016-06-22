@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
+    <style type="text/css">
+       * {
+         margin: 0;
+         padding: 0;
+       }
+       html { height: 100%;}
+       body{
+           height: 100%;
+           width: 100%;
+           position: relative;
+       }
+       li { list-style: none; }
+           #canvas{
+               display: block;
+               width: 640px;
+               height: 640px;
+               position: absolute;
+               top: 5px;
+               left: 5px;
+
+               border: solid;
+               border-width: 1px;
+
+           }
+           #mycolor{
+               width: 700px;
+               cursor: move;
+               background-color: wheat;
+               text-align: center;
+               padding: 4px;
+               position: fixed;
+               top: 0;
+               right: 0px;
+               border: solid;
+               border-width: 1px;
+           }
+           #mycolor .colors{
+               cursor: pointer;
+               border: solid;
+               border-width: 3px;
+               border-color: peachpuff;
+           }
+
+           #mycolor .colors.active
+           {
+               border: solid;
+               border-width: 3px;
+               border-color: crimson;
+           }
+
+           .divbtn{
+               display: inline-block;
+               color: black;
+               cursor: pointer;
+               width: 80px;
+               margin: auto;
+               margin-top: 10px;
+           }
+       .divbtn{
+           background-color:lightcoral;
+           transition: 0.5s;
+       }
+       .divbtn:hover{
+           background-color: cadetblue;
+           transition: 0.5s;
+       }
+       #btn-download:after{
+           overflow: hidden;
+           display: block;
+           width: 250px;
+           position: absolute;
+           background-color: coral;
+           bottom:-70px;
+           content: "The image will be showed in a new window,in the window you can click right button and save it";
+       }
+       #btn-download:after{
+           height: 0;
+           transition: 0.5s;
+       }
+       #btn-download:hover:after{
+           height: 85px;
+           transition: 0.5s;
+       }
+    </style>
+    <style type="text/css">
+      #list { min-height: 120px; width: 200px; background: black; color: white;}
+      #list { position: absolute; bottom:0; right:10px; }
+      #list li { margin-top: 4px; cursor: pointer;  }
+      .active { color: green; }
+    </style>
+  </head>
+  
+
+    <body>
+
+        <canvas id="canvas">
+        </canvas>
+        <div id="mycolor">
+            1<input type="color" class="colors">
+            2<input type="color" class="colors">
+            3<input type="color" class="colors">
+            4<input type="color" class="colors">
+            5<input type="color" class="colors">
+            6<input type="color" class="colors">
+            7<input type="color" class="colors">
+            8<input type="color" class="colors">
+            9<input type="color" class="colors">
+            <br/>
+            <span>Colors (use number keys to switch quickly)</span>
+            <br/>
+            <span>Brush Size</span>
+            <select id="brushsize" >
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="7">7</option>
+                <option value="9">9</option>
+                <option value="11">11</option>
+                <option value="13">13</option>
+                <option value="15">15</option>
+                <option value="19">19</option>
+                <option value="23">23</option>
+                <option value="35">35</option>
+                <option value="59">59</option>
+                <option value="99">99</option>
+            </select>
+            <br/>
+            <span>Board Size</span>
+            <select id="cansize" >
+                <option value="640">640</option>
+                <option value="1280">1280</option>
+                <option value="2560">2560</option>
+                <option value="3200">3200</option>
+            </select>
+            <br/>
+
+            <div id="ifgrid" class="divbtn">
+                Switch Grid
+            </div>
+            <div id="save" class="divbtn" >
+                <span  id="btn-download">Watch Image</span>
+            </div>
+            <br/>
+            <div id="change_grid" class="divbtn">
+                Change block number
+            </div>
+            <div id="get_Rectlist" class="divbtn">
+                save
+            </div>
+        </div>
+        <div id="list">
+          <ul></ul>
+        </div>
+
+    </body>
+    <script type="text/javascript" src="/javascripts/jq.js"></script>
+    <script type="text/javascript">//全局变量
+      var rectlist = [];
+      var rectlist_arr =  []; 
+    </script>
+    <script type="text/javascript" src="/javascripts/canvas_draw.js"></script>
+    <script type="text/javascript">
+         $(document).ready(function(){
+           var arr = [];
+           var row = 6; // 行
+           var col = 4; // 列
+           for (var i = 0; i < row; i++) {
+                arr[i] = [];
+                for (var j = 0; j < col ; j++) {
+                    arr[i][j] = ( "rgba("+i+","+j+","+(i+j)+")" );   // rgb(255,2,5);
+                };
+           };            
+              
+              // 存一下
+           $("#get_Rectlist").click( function(){
+              var obj = normalize_To_Save(rectlist);
+              obj.name = prompt("Name for your work!");
+              if( obj.name === null){ return ;}
+              Send_To_Save(obj);
+           });
+
+
+             //
+           get_Datas();
+         });
+
+         function normalize_To_Save(arr)
+         {
+            var t = [];
+            var row = 0;
+            var col = 0;
+            // 确定行列
+            for(var i in arr)
+            {   
+                 var commaPos = i.indexOf(","); 
+                 var x = parseInt( i.slice(0,commaPos) );
+                 var y = parseInt( i.slice(commaPos+1) );
+               x > row ? row = x: row;
+               y > col ? col = y: col;
+            }
+            //  存为一维数组
+            for(var i in arr)
+            {
+               // i : "1,2"
+                    var commaPos = i.indexOf(","); 
+                    var x = parseInt( i.slice(0,commaPos) );
+                    var y = parseInt( i.slice(commaPos+1) );
+                    t[ x * ( col + 1) + y ] = arr[i].mycol;
+
+            }
+               return { "arr" : t , "row" : row , "col" : col };
+         }
+
+         //
+         function normalize_To_Get(obj)
+         {
+            var row = parseInt( obj.row ); 
+            var col = parseInt( obj.col );
+            var t   = obj.arr;
+            var arr = {};
+            var x = 0;
+            var y = 0;
+            for(var i = 0; i < t.length ; i++)
+            {  
+               x = Math.floor( i / (col+1) );
+               y = i - x*( col + 1 );
+               arr[x+","+y] = { mycol:  t[i] };
+            }
+            return arr;
+         }
+
+         function get_Datas()
+         {
+             $.ajax
+             ({
+                type : "post",
+                url : "getDatas",
+                success : function(res){
+                   alert("从数据库请求到数据!");
+                   var ul = $("#list > ul")[0];
+                   for(var i in res)
+                   { 
+                     var li = $('<li>');
+                     li.html( res[i].name );
+                     $(ul).append(li);
+                     // model
+                     rectlist_arr[i] = normalize_To_Get( res[i] );
+                   }
+                },
+                error :  function(err){
+                   alert("失败！");
+                }
+             });
+         }
+
+         function Send_To_Save(obj){
+            console.log( obj );
+            $.ajax
+            ({
+                type:"post",
+                url:"add",
+                data:{ 
+                  "name": obj.name,
+                  "arr" : obj.arr.join(","),
+                  "row" : obj.row,
+                  "col" : obj.col
+                },
+                traditional:true,
+                success:function(res){
+                   alert(res);
+                },
+                error:function(err){
+                   alert("添加失败！");
+                }
+             })
+         }
+    </script>
+  </html>
